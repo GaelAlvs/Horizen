@@ -1,0 +1,128 @@
+<!-- HERO -->
+<section class="relative w-full">
+  <div
+    class="relative w-full h-[45vh] md:h-[60vh] lg:h-[75vh] bg-[url('https://images.pexels.com/photos/17399364/pexels-photo-17399364.jpeg')] bg-cover bg-center"
+  >
+    <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+
+    <div class="relative z-10 flex flex-col justify-center h-full px-4 text-white">
+      <h1 class="text-xl md:text-3xl lg:text-5xl font-bold max-w-xl">Casa inteligente e segura</h1>
+
+      <p class="mt-2 text-sm md:text-lg">Até 45% OFF em produtos selecionados</p>
+
+      <button class="mt-4 bg-white text-black px-4 py-2 rounded-md w-fit">Ver ofertas</button>
+    </div>
+  </div>
+
+  <!-- CARDS SOBREPOSTOS -->
+  <div class="relative z-20 -mt-12 px-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <!-- CARD -->
+      <div
+        class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 flex items-center gap-3"
+      >
+        <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">🏷️</div>
+
+        <div>
+          <p class="font-semibold text-sm">Ofertas</p>
+          <p class="text-xs text-gray-500">Descontos do dia</p>
+        </div>
+      </div>
+
+      <!-- CARD -->
+      <div
+        class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 flex items-center gap-3"
+      >
+        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">🔥</div>
+
+        <div>
+          <p class="font-semibold text-sm">Mais vendidos</p>
+          <p class="text-xs text-gray-500">Top produtos</p>
+        </div>
+      </div>
+
+      <!-- CARD -->
+      <div
+        class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 flex items-center gap-3"
+      >
+        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">💻</div>
+
+        <div>
+          <p class="font-semibold text-sm">Tecnologia</p>
+          <p class="text-xs text-gray-500">Eletrônicos</p>
+        </div>
+      </div>
+
+      <!-- CARD -->
+      <div
+        class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 flex items-center gap-3"
+      >
+        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">🔨</div>
+
+        <div>
+          <p class="font-semibold text-sm">Ferramentas</p>
+          <p class="text-xs text-gray-500">Construções</p>
+        </div>
+      </div>
+
+      <!-- CARD (só desktop/tablet) -->
+      <div
+        class="hidden sm:flex bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 items-center gap-3"
+      >
+        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">🏠</div>
+
+        <div>
+          <p class="font-semibold text-sm">Casa</p>
+          <p class="text-xs text-gray-500">Decoração</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BANNER SCROLL -->
+<section class="mt-6">
+  <div class="overflow-x-auto scrollbar-hide">
+    <div class="flex gap-4 px-4 snap-x snap-mandatory">
+      @for (banner of banners; track banner.title) {
+        <div class="min-w-[85%] snap-start rounded-xl p-4 text-white" [ngClass]="banner.color">
+          <h2 class="text-lg font-bold">{{ banner.title }}</h2>
+          <p class="text-sm">{{ banner.subtitle }}</p>
+
+          <div class="flex justify-center mt-6">
+            <img [src]="banner.image" class="h-32 object-contain" />
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- PRODUTOS -->
+<section class="mt-6">
+  <h3 class="px-4 font-semibold">Ofertas para você</h3>
+
+  <div class="flex gap-3 overflow-x-auto scrollbar-hide px-4 mt-3">
+    @for (product of products; track product.name) {
+      <div class="min-w-[140px] bg-white rounded-lg p-3 shadow">
+        <img [src]="product.image" class="h-20 mx-auto object-contain" />
+        <p class="text-sm mt-2">{{ product.name }}</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- CATEGORIAS -->
+<section class="mt-6 mb-10">
+  <h3 class="px-4 font-semibold">Categorias</h3>
+
+  <div class="flex gap-4 overflow-x-auto scrollbar-hide px-4 mt-3">
+    @for (cat of categories; track cat.name) {
+      <div class="flex flex-col items-center min-w-[80px]">
+        <div class="w-16 h-16 rounded-full" [ngClass]="cat.color"></div>
+
+        <p class="text-xs mt-2 text-center">{{ cat.name }}</p>
+      </div>
+    }
+  </div>
+</section>
