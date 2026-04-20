@@ -85,7 +85,11 @@
   <div class="overflow-x-auto scrollbar-hide">
     <div class="flex gap-4 px-4 snap-x snap-mandatory">
       @for (banner of banners; track banner.title) {
-        <div class="min-w-[85%] snap-start rounded-xl p-4 text-white" [ngClass]="banner.color">
+        <div
+          class="min-w-[85%] snap-start rounded-xl p-4 text-white"
+          [ngClass]="banner.color"
+          [routerLink]="'shop'"
+        >
           <h2 class="text-lg font-bold">{{ banner.title }}</h2>
           <p class="text-sm">{{ banner.subtitle }}</p>
 
@@ -94,6 +98,7 @@
           </div>
         </div>
       }
+      <div class="min-w-[0.1rem]"></div>
     </div>
   </div>
 </section>
@@ -119,9 +124,28 @@
   <div class="flex gap-4 overflow-x-auto scrollbar-hide px-4 mt-3">
     @for (cat of categories; track cat.name) {
       <div class="flex flex-col items-center min-w-[80px]">
-        <div class="w-16 h-16 rounded-full" [ngClass]="cat.color"></div>
+        <div class="w-16 h-16 rounded-full" [ngClass]="cat.color">
+          <div>
+            <img [src]="cat.image" class="h-10 mx-auto object-contain mt-3" />
+          </div>
+        </div>
 
         <p class="text-xs mt-2 text-center">{{ cat.name }}</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- RECOMENDAÇÕES -->
+
+<section class="w-full mt-6 mb-10 px-4">
+  <h3 class="font-semibold">Recomendações para você</h3>
+
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-3">
+    @for (rec of recommendations; track rec.name) {
+      <div class="bg-white rounded-lg p-3 shadow">
+        <img [src]="rec.image" class="h-20 mx-auto object-contain" />
+        <p class="text-sm mt-2">{{ rec.name }}</p>
       </div>
     }
   </div>
