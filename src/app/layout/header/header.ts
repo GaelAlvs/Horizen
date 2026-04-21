@@ -1,24 +1,39 @@
-import { Component } from '@angular/core';
+import { Component, signal, computed, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink, Router } from '@angular/router';
+import { CartService } from '../../core/services/cart-service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
 export class Header {
-  searchTerm: string = '';
-  cartCount: number = 2; // depois virá de um serviço
+  searchTerm = '';
+  menuOpen = signal(false);
+
+  private cartService = inject(CartService);
+  private router = inject(Router);
+
+  cartCount = computed(() => this.cartService.totalItems());
 
   onSearch() {
-    console.log('Buscando:', this.searchTerm);
-    // futuramente: redirecionar para página de busca
+    const value = this.searchTerm.trim();
+    if (value) {
+      this.router.navigate(['/shop'], {
+        queryParams: { q: value },
+      });
+    }
   }
 
   openMenu() {
-    console.log('Abrir menu lateral');
+    this.menuOpen.set(true);
+  }
+
+  closeMenu() {
+    this.menuOpen.set(false);
   }
 
   openCart() {

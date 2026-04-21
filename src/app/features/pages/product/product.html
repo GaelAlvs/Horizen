@@ -1,0 +1,126 @@
+@if (product(); as p) {
+  <article class="w-full bg-white p-4 space-y-3">
+    <!-- Imagem -->
+    <img [src]="p.image" [alt]="p.name" class="w-full h-auto rounded-lg object-cover" />
+
+    <!-- Info básica -->
+    <div>
+      <p class="text-xs text-gray-500">Marca: {{ p.marca }}</p>
+      <h1 class="font-semibold text-base leading-tight">{{ p.name }}</h1>
+    </div>
+
+    <!-- Avaliação -->
+    <div class="flex items-center text-sm">
+      <span class="mr-1">{{ p.rating }}</span>
+      <div class="text-yellow-500">
+        @for (star of getStars(p.rating); track $index) {
+          <i [class]="star"></i>
+        }
+      </div>
+      <span class="text-gray-400 ml-1 text-xs">({{ p.reviewCount }})</span>
+      <span class="text-blue-500 ml-2">+100 comprados mês passado</span>
+    </div>
+
+    <!-- Preço -->
+    <div class="border-t pt-3">
+      @if (p.discount) {
+        <p class="text-xs text-gray-400 line-through">R$ {{ p.priceFormatted }}</p>
+        <p class="text-lg">
+          R$
+          <span class="font-bold text-2xl">{{
+            productService.formatPrice(productService.getPriceWithDiscount(p))
+          }}</span>
+        </p>
+        <p class="text-xs text-green-600">{{ p.discount }}% OFF aplicado</p>
+      } @else {
+        @if (p.installments) {
+          <p class="text-xs text-gray-500">
+            Ou até {{ p.installments.count }}x de R$
+            {{ productService.formatPrice(p.installments.value) }}
+          </p>
+        }
+        <p class="text-lg">
+          R$ <span class="font-bold text-2xl">{{ p.priceFormatted }}</span>
+        </p>
+        <p class="text-xs text-green-600">7% OFF no Pix ou débito</p>
+      }
+    </div>
+
+    <!-- Entrega / estoque -->
+    <div class="text-sm">
+      @if (p.stock > 10) {
+        <p class="text-green-600 font-semibold">Em estoque</p>
+      } @else if (p.stock > 0) {
+        <p class="text-orange-500 font-semibold">Restam {{ p.stock }} em estoque</p>
+      } @else {
+        <p class="text-red-500 font-semibold">Fora de estoque</p>
+      }
+      <p class="text-gray-600">Entrega grátis até quinta-feira</p>
+    </div>
+
+    <!-- Quantidade -->
+    <div class="flex items-center gap-3">
+      <span class="text-sm text-gray-600">Quantidade:</span>
+      <div class="flex items-center border rounded-lg overflow-hidden">
+        <button
+          class="px-3 py-1 text-lg font-bold text-gray-600 hover:bg-gray-100 disabled:opacity-40"
+          (click)="decrement()"
+          [disabled]="quantity() === 1"
+        >
+          −
+        </button>
+        <span class="px-4 py-1 text-sm border-x">{{ quantity() }}</span>
+        <button
+          class="px-3 py-1 text-lg font-bold text-gray-600 hover:bg-gray-100 disabled:opacity-40"
+          (click)="increment()"
+          [disabled]="quantity() === p.stock"
+        >
+          +
+        </button>
+      </div>
+    </div>
+
+    <!-- Botões -->
+    @if (p.stock > 0) {
+      <div class="space-y-2">
+        <button
+          class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 rounded"
+          (click)="addToCart()"
+        >
+          Adicionar ao Carrinho
+        </button>
+        <button
+          class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded"
+          (click)="buyNow()"
+        >
+          Comprar agora
+        </button>
+      </div>
+    }
+
+    <!-- Produtos relacionados -->
+    @if (relatedProducts().length > 0) {
+      <div class="border-t pt-4">
+        <h2 class="font-semibold text-sm mb-3">Produtos relacionados</h2>
+        <div class="flex gap-3 overflow-x-auto pb-2">
+          @for (related of relatedProducts(); track related.id) {
+            <div
+              class="min-w-[110px] bg-gray-50 rounded-lg p-2 shadow-sm cursor-pointer active:scale-95 transition-all"
+              [routerLink]="['/product', related.id]"
+            >
+              <img [src]="related.image" [alt]="related.name" class="h-16 mx-auto object-contain" />
+              <p class="text-xs mt-1 line-clamp-2 leading-tight">{{ related.name }}</p>
+              <p class="text-xs font-semibold mt-1">R$ {{ related.priceFormatted }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </article>
+} @else {
+  <div class="flex flex-col items-center justify-center h-64 gap-3 text-gray-400">
+    <i class="fa-solid fa-box-open text-4xl"></i>
+    <p class="text-sm">Produto não encontrado.</p>
+    <a routerLink="/shop" class="text-blue-500 text-sm underline">Ver catálogo</a>
+  </div>
+}

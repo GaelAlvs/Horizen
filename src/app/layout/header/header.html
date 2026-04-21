@@ -10,9 +10,9 @@
     <!-- Carrinho -->
     <button class="relative text-xl" (click)="openCart()">
       <i class="fa-solid fa-cart-shopping"></i>
-      @if (cartCount > 0) {
+      @if (cartCount() > 0) {
         <span class="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
-          {{ cartCount }}
+          {{ cartCount() }}
         </span>
       }
     </button>
@@ -44,3 +44,42 @@
     </button>
   </form>
 </header>
+
+<!-- Overlay -->
+@if (menuOpen()) {
+  <div class="fixed inset-0 bg-black/50 z-40" (click)="closeMenu()"></div>
+
+  <!-- Drawer -->
+  <div class="fixed top-0 left-0 h-full w-72 bg-white z-50 shadow-xl flex flex-col">
+    <!-- Topo do drawer -->
+    <div class="flex items-center justify-between px-4 py-4 border-b">
+      <h2 class="font-bold text-lg">Menu</h2>
+      <button (click)="closeMenu()"><i class="fa-solid fa-xmark text-xl"></i></button>
+    </div>
+
+    <!-- Links -->
+    <nav class="flex flex-col px-4 py-3 gap-1">
+      <a
+        routerLink="/"
+        (click)="closeMenu()"
+        class="flex items-center gap-3 py-3 border-b text-sm hover:text-yellow-500"
+      >
+        <i class="fa-solid fa-house w-5"></i> Início
+      </a>
+      <a
+        routerLink="/shop"
+        (click)="closeMenu()"
+        class="flex items-center gap-3 py-3 border-b text-sm hover:text-yellow-500"
+      >
+        <i class="fa-solid fa-store w-5"></i> Loja
+      </a>
+      <a
+        routerLink="/cart"
+        (click)="closeMenu()"
+        class="flex items-center gap-3 py-3 border-b text-sm hover:text-yellow-500"
+      >
+        <i class="fa-solid fa-cart-shopping w-5"></i> Carrinho
+      </a>
+    </nav>
+  </div>
+}
