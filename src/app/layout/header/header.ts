@@ -14,8 +14,8 @@ export class Header {
   searchTerm = '';
   menuOpen = signal(false);
 
-  private cartService = inject(CartService);
   private router = inject(Router);
+  private cartService = inject(CartService);
 
   cartCount = computed(() => this.cartService.totalItems());
 
@@ -37,6 +37,6 @@ export class Header {
   }
 
   openCart() {
-    console.log('Abrir carrinho');
+    this.router.navigate(['/cart']);
   }
 }

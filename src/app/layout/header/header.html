@@ -5,14 +5,16 @@
     <button class="text-xl" (click)="openMenu()"><i class="fa-solid fa-bars"></i></button>
 
     <!-- Logo -->
-    <h1 class="text-lg font-bold tracking-wide">Horizen</h1>
+    <h1 class="text-lg font-bold tracking-wide cursor-pointer" routerLink="/">Horizen</h1>
 
     <!-- Carrinho -->
     <button class="relative text-xl" (click)="openCart()">
       <i class="fa-solid fa-cart-shopping"></i>
       @if (cartCount() > 0) {
-        <span class="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
-          {{ cartCount() }}
+        <span
+          class="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1"
+        >
+          {{ cartCount() > 99 ? '99+' : cartCount() }}
         </span>
       }
     </button>

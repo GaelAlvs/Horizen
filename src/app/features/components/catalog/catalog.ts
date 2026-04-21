@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductService, Product } from '../../../core/services/product-service';
+import { CartService } from '../../../core/services/cart-service';
 
 @Component({
   selector: 'app-catalog',
@@ -10,10 +11,13 @@ import { ProductService, Product } from '../../../core/services/product-service'
 })
 export class Catalog {
   productService = inject(ProductService);
-  products = this.productService.products;
+  private cartService = inject(CartService);
+
+  // Aceita lista externa (do shop com filtro) ou usa todos os produtos
+  products = input<Product[]>(this.productService.products());
 
   addToCart(product: Product) {
-    console.log('Adicionar ao carrinho:', product.name);
+    this.cartService.addItem(product);
   }
 
   getStars(rating: number): string[] {

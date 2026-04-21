@@ -1,6 +1,9 @@
 import { Component, inject, signal, computed } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProductService, Product } from '../../../core/services/product-service';
+import { CartService } from '../../../core/services/cart-service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-product',
@@ -10,13 +13,17 @@ import { ProductService, Product } from '../../../core/services/product-service'
 })
 export class ProductPage {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   productService = inject(ProductService);
+  private cartService = inject(CartService);
 
   quantity = signal(1);
 
+  // Lê o id reativo — atualiza quando a rota muda sem recriar o componente
+  private productId = toSignal(this.route.paramMap.pipe(map((params) => Number(params.get('id')))));
+
   product = computed<Product | undefined>(() => {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    return this.productService.getById(id);
+    return this.productService.getById(this.productId() ?? 0);
   });
 
   relatedProducts = computed(() => {
@@ -40,13 +47,12 @@ export class ProductPage {
   addToCart() {
     const p = this.product();
     if (!p) return;
-    // CartService será injetado aqui futuramente
-    console.log('Adicionar ao carrinho:', p.name, 'x', this.quantity());
+    this.cartService.addItem(p, this.quantity());
   }
 
   buyNow() {
     this.addToCart();
-    // Navegar para /cart futuramente
+    this.router.navigate(['/cart']);
   }
 
   getStars(rating: number): string[] {

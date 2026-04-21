@@ -7,70 +7,68 @@
 
     <div class="relative z-10 flex flex-col justify-center h-full px-4 text-white">
       <h1 class="text-xl md:text-3xl lg:text-5xl font-bold max-w-xl">Casa inteligente e segura</h1>
-
       <p class="mt-2 text-sm md:text-lg">Até 45% OFF em produtos selecionados</p>
-
-      <button class="mt-4 bg-white text-black px-4 py-2 rounded-md w-fit">Ver ofertas</button>
+      <button
+        class="mt-4 bg-white text-black px-4 py-2 rounded-md w-fit hover:bg-yellow-400 transition"
+        routerLink="/shop"
+      >
+        Ver ofertas
+      </button>
     </div>
   </div>
 
   <!-- CARDS SOBREPOSTOS -->
   <div class="relative z-20 -mt-12 px-4">
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-      <!-- CARD -->
       <div
         class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 flex items-center gap-3"
+        routerLink="/shop"
       >
         <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">🏷️</div>
-
         <div>
           <p class="font-semibold text-sm">Ofertas</p>
           <p class="text-xs text-gray-500">Descontos do dia</p>
         </div>
       </div>
 
-      <!-- CARD -->
       <div
         class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 flex items-center gap-3"
+        routerLink="/shop"
       >
         <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">🔥</div>
-
         <div>
           <p class="font-semibold text-sm">Mais vendidos</p>
           <p class="text-xs text-gray-500">Top produtos</p>
         </div>
       </div>
 
-      <!-- CARD -->
       <div
         class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 flex items-center gap-3"
+        routerLink="/shop"
       >
         <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">💻</div>
-
         <div>
           <p class="font-semibold text-sm">Tecnologia</p>
           <p class="text-xs text-gray-500">Eletrônicos</p>
         </div>
       </div>
 
-      <!-- CARD -->
       <div
         class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 flex items-center gap-3"
+        routerLink="/shop"
       >
         <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">🔨</div>
-
         <div>
           <p class="font-semibold text-sm">Ferramentas</p>
           <p class="text-xs text-gray-500">Construções</p>
         </div>
       </div>
 
-      <!-- CARD (só desktop/tablet) -->
       <div
         class="hidden sm:flex bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 items-center gap-3"
+        routerLink="/shop"
       >
         <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">🏠</div>
-
         <div>
           <p class="font-semibold text-sm">Casa</p>
           <p class="text-xs text-gray-500">Decoração</p>
@@ -86,13 +84,12 @@
     <div class="flex gap-4 px-4 snap-x snap-mandatory">
       @for (banner of banners; track banner.title) {
         <div
-          class="min-w-[85%] snap-start rounded-xl p-4 text-white"
+          class="min-w-[85%] snap-start rounded-xl p-4 text-white cursor-pointer active:scale-[0.98] transition-all"
           [ngClass]="banner.color"
-          [routerLink]="'shop'"
+          [routerLink]="banner.route"
         >
           <h2 class="text-lg font-bold">{{ banner.title }}</h2>
           <p class="text-sm">{{ banner.subtitle }}</p>
-
           <div class="flex justify-center mt-6">
             <img [src]="banner.image" class="h-32 object-contain" />
           </div>
@@ -103,15 +100,23 @@
   </div>
 </section>
 
-<!-- PRODUTOS -->
+<!-- OFERTAS PARA VOCÊ -->
 <section class="mt-6">
   <h3 class="px-4 font-semibold">Ofertas para você</h3>
-
   <div class="flex gap-3 overflow-x-auto scrollbar-hide px-4 mt-3">
-    @for (product of products; track product.name) {
-      <div class="min-w-[140px] bg-white rounded-lg p-3 shadow">
-        <img [src]="product.image" class="h-20 mx-auto object-contain" />
-        <p class="text-sm mt-2">{{ product.name }}</p>
+    @for (product of offers(); track product.id) {
+      <div
+        class="min-w-[140px] bg-white rounded-lg p-3 shadow cursor-pointer active:scale-95 transition-all"
+        [routerLink]="['/product', product.id]"
+      >
+        <img [src]="product.image" [alt]="product.name" class="h-20 mx-auto object-contain" />
+        <p class="text-xs mt-2 line-clamp-2 leading-tight">{{ product.name }}</p>
+        <p class="text-sm font-bold mt-1">R$ {{ product.priceFormatted }}</p>
+        @if (product.discount) {
+          <span class="text-xs text-white bg-red-500 rounded px-1"
+            >{{ product.discount }}% OFF</span
+          >
+        }
       </div>
     }
   </div>
@@ -120,16 +125,15 @@
 <!-- CATEGORIAS -->
 <section class="mt-6 mb-10">
   <h3 class="px-4 font-semibold">Categorias</h3>
-
   <div class="flex gap-4 overflow-x-auto scrollbar-hide px-4 mt-3">
     @for (cat of categories; track cat.name) {
-      <div class="flex flex-col items-center min-w-[80px]">
-        <div class="w-16 h-16 rounded-full" [ngClass]="cat.color">
-          <div>
-            <img [src]="cat.image" class="h-10 mx-auto object-contain mt-3" />
-          </div>
+      <div
+        class="flex flex-col items-center min-w-[80px] cursor-pointer active:scale-95 transition-all"
+        [routerLink]="cat.route"
+      >
+        <div class="w-16 h-16 rounded-full flex items-center justify-center" [ngClass]="cat.color">
+          <img [src]="cat.image" [alt]="cat.name" class="h-10 object-contain" />
         </div>
-
         <p class="text-xs mt-2 text-center">{{ cat.name }}</p>
       </div>
     }
@@ -137,15 +141,17 @@
 </section>
 
 <!-- RECOMENDAÇÕES -->
-
 <section class="w-full mt-6 mb-10 px-4">
   <h3 class="font-semibold">Recomendações para você</h3>
-
   <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-3">
-    @for (rec of recommendations; track rec.name) {
-      <div class="bg-white rounded-lg p-3 shadow">
-        <img [src]="rec.image" class="h-20 mx-auto object-contain" />
-        <p class="text-sm mt-2">{{ rec.name }}</p>
+    @for (product of recommendations(); track product.id) {
+      <div
+        class="bg-white rounded-lg p-3 shadow cursor-pointer active:scale-95 transition-all"
+        [routerLink]="['/product', product.id]"
+      >
+        <img [src]="product.image" [alt]="product.name" class="h-20 mx-auto object-contain" />
+        <p class="text-xs mt-2 line-clamp-2 leading-tight">{{ product.name }}</p>
+        <p class="text-sm font-bold mt-1">R$ {{ product.priceFormatted }}</p>
       </div>
     }
   </div>

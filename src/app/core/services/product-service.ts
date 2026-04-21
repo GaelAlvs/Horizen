@@ -20,6 +20,7 @@ export interface Product {
   providedIn: 'root',
 })
 export class ProductService {
+  // Simulated product data
   private readonly _products = signal<Product[]>([
     {
       id: 1,

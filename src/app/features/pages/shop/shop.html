@@ -1,1 +1,24 @@
-<app-catalog />
+@if (searchQuery()) {
+  <div class="flex items-center gap-2 px-4 pt-4">
+    <p class="text-sm text-gray-500">
+      Resultados para: <span class="font-semibold text-black">{{ searchQuery() }}</span>
+    </p>
+    <button class="text-xs text-red-400 hover:text-red-600 ml-auto" (click)="clearSearch()">
+      <i class="fa-solid fa-xmark mr-1"></i>Limpar
+    </button>
+  </div>
+
+  @if (filteredProducts().length === 0) {
+    <div class="flex flex-col items-center justify-center h-48 gap-2 text-gray-400 px-4">
+      <i class="fa-solid fa-magnifying-glass text-3xl"></i>
+      <p class="text-sm text-center">
+        Nenhum produto encontrado para <strong>{{ searchQuery() }}</strong>
+      </p>
+      <button class="text-sm text-blue-500 underline" (click)="clearSearch()">
+        Ver todos os produtos
+      </button>
+    </div>
+  }
+}
+
+<app-catalog [products]="filteredProducts()" />

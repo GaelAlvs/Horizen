@@ -1,23 +1,39 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProductService } from '../../../core/services/product-service';
 import { Catalog } from '../../components/catalog/catalog';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-shop',
-  standalone: true,
   imports: [Catalog],
   templateUrl: './shop.html',
   styleUrl: './shop.css',
 })
-export class Shop {
-  searchTerm = '';
-
+export class Shop implements OnInit {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private productService = inject(ProductService);
+
+  searchQuery = signal('');
+
+  filteredProducts = computed(() => {
+    const q = this.searchQuery();
+    return q ? this.productService.search(q) : this.productService.products();
+  });
 
   ngOnInit() {
-    const q = this.route.snapshot.queryParamMap.get('q');
-    if (q) {
-      this.searchTerm = q;
-    }
+    this.route.queryParamMap.subscribe((params) => {
+      this.searchQuery.set(params.get('q') ?? '');
+    });
+  }
+
+  clearSearch() {
+    this.searchQuery.set('');
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {},
+      queryParamsHandling: '',
+      replaceUrl: true,
+    });
   }
 }
