@@ -12,7 +12,6 @@ import { ProductService } from '../../../core/services/product-service';
 export class Hero {
   productService = inject(ProductService);
 
-  // Produtos do serviço central
   offers = this.productService.products;
   recommendations = this.productService.products;
 
@@ -99,4 +98,8 @@ export class Hero {
       route: '/shop',
     },
   ];
+
+  scroll(el: HTMLElement, direction: 'left' | 'right') {
+    el.scrollBy({ left: direction === 'right' ? 300 : -300, behavior: 'smooth' });
+  }
 }

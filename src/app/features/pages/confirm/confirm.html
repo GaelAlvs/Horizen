@@ -1,0 +1,41 @@
+<div class="flex flex-col items-center justify-center min-h-[70vh] p-6 text-center space-y-4">
+  <!-- Ícone -->
+  <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center">
+    <i class="fa-solid fa-check text-green-500 text-3xl"></i>
+  </div>
+
+  <!-- Texto -->
+  <h1 class="text-xl font-bold">Pedido confirmado!</h1>
+  <p class="text-sm text-gray-500 max-w-xs">
+    Seu pedido foi recebido e está sendo processado. Você receberá uma confirmação por e-mail em
+    breve.
+  </p>
+
+  <!-- Número do pedido -->
+  <div class="bg-gray-50 rounded-xl px-6 py-4 space-y-1">
+    <p class="text-xs text-gray-400">Número do pedido</p>
+    <p class="text-lg font-bold tracking-widest">#{{ orderNumber }}</p>
+  </div>
+
+  <!-- Prazo -->
+  <div class="flex items-center gap-2 text-sm text-gray-500">
+    <i class="fa-solid fa-truck text-yellow-400"></i>
+    <span>Entrega prevista em até <strong>7 dias úteis</strong></span>
+  </div>
+
+  <!-- Botões -->
+  <div class="w-full space-y-2 pt-2">
+    <button
+      class="w-full bg-yellow-400 hover:bg-yellow-500 active:scale-[0.98] transition-all py-3 rounded-lg font-semibold text-sm"
+      routerLink="/"
+    >
+      Voltar ao início
+    </button>
+    <button
+      class="w-full border border-gray-300 hover:bg-gray-50 py-3 rounded-lg text-sm text-gray-600"
+      routerLink="/shop"
+    >
+      Continuar comprando
+    </button>
+  </div>
+</div>

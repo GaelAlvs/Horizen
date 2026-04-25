@@ -1,65 +1,77 @@
-<header class="w-full bg-white border-b px-3 py-2 flex flex-col gap-2 sticky top-0 z-50 shadow-sm">
-  <!-- Linha superior -->
-  <div class="flex items-center justify-between">
-    <!-- Menu -->
-    <button class="text-xl" (click)="openMenu()"><i class="fa-solid fa-bars"></i></button>
+<header class="w-full bg-white border-b sticky top-0 z-50 shadow-sm">
+  <div class="max-w-5xl mx-auto px-4 py-2">
+    <!-- MOBILE: duas linhas -->
+    <!-- DESKTOP: tudo em uma linha -->
+    <div class="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
+      <!-- Linha 1 (mobile) / tudo inline (desktop) -->
+      <div class="flex items-center justify-between md:contents">
+        <!-- Menu hamburguer — só mobile -->
+        <button class="text-xl md:hidden" (click)="openMenu()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
 
-    <!-- Logo -->
-    <h1 class="text-lg font-bold tracking-wide cursor-pointer" routerLink="/">Horizen</h1>
-
-    <!-- Carrinho -->
-    <button class="relative text-xl" (click)="openCart()">
-      <i class="fa-solid fa-cart-shopping"></i>
-      @if (cartCount() > 0) {
-        <span
-          class="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1"
+        <!-- Logo -->
+        <h1
+          class="text-lg font-bold tracking-wide cursor-pointer md:mr-2 md:whitespace-nowrap"
+          routerLink="/"
         >
-          {{ cartCount() > 99 ? '99+' : cartCount() }}
-        </span>
-      }
-    </button>
+          Horizen
+        </h1>
+
+        <!-- Carrinho — fica no canto direito no mobile, inline no desktop -->
+        <button
+          class="relative text-xl md:order-last md:ml-2 md:flex-shrink-0"
+          (click)="openCart()"
+        >
+          <i class="fa-solid fa-cart-shopping"></i>
+          @if (cartCount() > 0) {
+            <span
+              class="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1"
+            >
+              {{ cartCount() > 99 ? '99+' : cartCount() }}
+            </span>
+          }
+        </button>
+      </div>
+
+      <!-- Busca — linha 2 no mobile, cresce no meio no desktop -->
+      <form
+        (ngSubmit)="onSearch()"
+        class="flex items-center bg-gray-100 rounded-lg px-2 py-1 focus-within:ring-2 focus-within:ring-yellow-400 transition md:flex-1"
+      >
+        <span class="text-gray-500 px-2"><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          name="searchTerm"
+          placeholder="Buscar produtos, marcas..."
+          class="bg-transparent outline-none w-full text-sm px-1"
+        />
+        <button
+          type="submit"
+          class="bg-yellow-400 hover:bg-yellow-500 text-black text-sm font-medium px-3 py-1 rounded-md transition"
+        >
+          Buscar
+        </button>
+      </form>
+
+      <!-- Nav links — só desktop -->
+      <nav class="hidden md:flex items-center gap-4 text-sm font-medium whitespace-nowrap">
+        <a routerLink="/" class="hover:text-yellow-500 transition">Início</a>
+        <a routerLink="/shop" class="hover:text-yellow-500 transition">Loja</a>
+      </nav>
+    </div>
   </div>
-
-  <!-- Barra de busca -->
-  <form
-    (ngSubmit)="onSearch()"
-    class="flex items-center bg-gray-100 rounded-lg px-2 py-1 focus-within:ring-2 focus-within:ring-yellow-400 transition"
-  >
-    <!-- Ícone -->
-    <span class="text-gray-500 px-2"><i class="fa-solid fa-magnifying-glass"></i></span>
-
-    <!-- Input -->
-    <input
-      type="text"
-      [(ngModel)]="searchTerm"
-      name="searchTerm"
-      placeholder="Buscar produtos, marcas..."
-      class="bg-transparent outline-none w-full text-sm px-1"
-    />
-
-    <!-- Botão -->
-    <button
-      type="submit"
-      class="bg-yellow-400 hover:bg-yellow-500 text-black text-sm font-medium px-3 py-1 rounded-md transition"
-    >
-      Buscar
-    </button>
-  </form>
 </header>
 
-<!-- Overlay -->
+<!-- Overlay + Drawer (mobile) -->
 @if (menuOpen()) {
   <div class="fixed inset-0 bg-black/50 z-40" (click)="closeMenu()"></div>
-
-  <!-- Drawer -->
   <div class="fixed top-0 left-0 h-full w-72 bg-white z-50 shadow-xl flex flex-col">
-    <!-- Topo do drawer -->
     <div class="flex items-center justify-between px-4 py-4 border-b">
       <h2 class="font-bold text-lg">Menu</h2>
       <button (click)="closeMenu()"><i class="fa-solid fa-xmark text-xl"></i></button>
     </div>
-
-    <!-- Links -->
     <nav class="flex flex-col px-4 py-3 gap-1">
       <a
         routerLink="/"

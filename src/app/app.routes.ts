@@ -4,6 +4,8 @@ import { Home } from './features/pages/home/home';
 import { Shop } from './features/pages/shop/shop';
 import { ProductPage } from './features/pages/product/product';
 import { CartPage } from './features/pages/cart/cart';
+import { Checkout } from './features/pages/checkout/checkout';
+import { Confirm } from './features/pages/confirm/confirm';
 
 export const routes: Routes = [
   {
@@ -25,6 +27,14 @@ export const routes: Routes = [
       {
         path: 'cart',
         component: CartPage,
+      },
+      {
+        path: 'checkout',
+        component: Checkout,
+      },
+      {
+        path: 'confirm',
+        component: Confirm,
       },
     ],
   },

@@ -4,7 +4,6 @@
     class="relative w-full h-[45vh] md:h-[60vh] lg:h-[75vh] bg-[url('https://images.pexels.com/photos/17399364/pexels-photo-17399364.jpeg')] bg-cover bg-center"
   >
     <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
-
     <div class="relative z-10 flex flex-col justify-center h-full px-4 text-white">
       <h1 class="text-xl md:text-3xl lg:text-5xl font-bold max-w-xl">Casa inteligente e segura</h1>
       <p class="mt-2 text-sm md:text-lg">Até 45% OFF em produtos selecionados</p>
@@ -30,7 +29,6 @@
           <p class="text-xs text-gray-500">Descontos do dia</p>
         </div>
       </div>
-
       <div
         class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 flex items-center gap-3"
         routerLink="/shop"
@@ -41,7 +39,6 @@
           <p class="text-xs text-gray-500">Top produtos</p>
         </div>
       </div>
-
       <div
         class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 flex items-center gap-3"
         routerLink="/shop"
@@ -52,7 +49,6 @@
           <p class="text-xs text-gray-500">Eletrônicos</p>
         </div>
       </div>
-
       <div
         class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 flex items-center gap-3"
         routerLink="/shop"
@@ -63,7 +59,6 @@
           <p class="text-xs text-gray-500">Construções</p>
         </div>
       </div>
-
       <div
         class="hidden sm:flex bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 items-center gap-3"
         routerLink="/shop"
@@ -79,12 +74,12 @@
 </section>
 
 <!-- BANNER SCROLL -->
-<section class="mt-6">
-  <div class="overflow-x-auto scrollbar-hide">
+<section class="mt-6 relative group">
+  <div class="overflow-x-auto scrollbar-hide" #bannersRef>
     <div class="flex gap-4 px-4 snap-x snap-mandatory">
       @for (banner of banners; track banner.title) {
         <div
-          class="min-w-[85%] snap-start rounded-xl p-4 text-white cursor-pointer active:scale-[0.98] transition-all"
+          class="min-w-[85%] md:min-w-[45%] lg:min-w-[30%] snap-start rounded-xl p-4 text-white cursor-pointer active:scale-[0.98] transition-all"
           [ngClass]="banner.color"
           [routerLink]="banner.route"
         >
@@ -98,12 +93,25 @@
       <div class="min-w-[0.1rem]"></div>
     </div>
   </div>
+  <!-- Setas desktop -->
+  <button
+    class="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md rounded-full w-9 h-9 items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+    (click)="scroll(bannersRef, 'left')"
+  >
+    <i class="fa-solid fa-chevron-left text-sm"></i>
+  </button>
+  <button
+    class="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md rounded-full w-9 h-9 items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+    (click)="scroll(bannersRef, 'right')"
+  >
+    <i class="fa-solid fa-chevron-right text-sm"></i>
+  </button>
 </section>
 
 <!-- OFERTAS PARA VOCÊ -->
-<section class="mt-6">
+<section class="mt-6 relative group">
   <h3 class="px-4 font-semibold">Ofertas para você</h3>
-  <div class="flex gap-3 overflow-x-auto scrollbar-hide px-4 mt-3">
+  <div class="flex gap-3 overflow-x-auto scrollbar-hide px-4 mt-3" #offersRef>
     @for (product of offers(); track product.id) {
       <div
         class="min-w-[140px] bg-white rounded-lg p-3 shadow cursor-pointer active:scale-95 transition-all"
@@ -120,6 +128,19 @@
       </div>
     }
   </div>
+  <!-- Setas desktop -->
+  <button
+    class="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md rounded-full w-9 h-9 items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+    (click)="scroll(offersRef, 'left')"
+  >
+    <i class="fa-solid fa-chevron-left text-sm"></i>
+  </button>
+  <button
+    class="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md rounded-full w-9 h-9 items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+    (click)="scroll(offersRef, 'right')"
+  >
+    <i class="fa-solid fa-chevron-right text-sm"></i>
+  </button>
 </section>
 
 <!-- CATEGORIAS -->
@@ -141,7 +162,7 @@
 </section>
 
 <!-- RECOMENDAÇÕES -->
-<section class="w-full mt-6 mb-10 px-4">
+<section class="w-full mt-6 mb-10 px-4 relative group">
   <h3 class="font-semibold">Recomendações para você</h3>
   <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-3">
     @for (product of recommendations(); track product.id) {
