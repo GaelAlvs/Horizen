@@ -1,3 +1,4 @@
+<!-- Filtro de busca ativo -->
 @if (searchQuery()) {
   <div class="flex items-center gap-2 px-4 pt-4">
     <p class="text-sm text-gray-500">
@@ -7,18 +8,73 @@
       <i class="fa-solid fa-xmark mr-1"></i>Limpar
     </button>
   </div>
+}
 
-  @if (filteredProducts().length === 0) {
-    <div class="flex flex-col items-center justify-center h-48 gap-2 text-gray-400 px-4">
-      <i class="fa-solid fa-magnifying-glass text-3xl"></i>
-      <p class="text-sm text-center">
-        Nenhum produto encontrado para <strong>{{ searchQuery() }}</strong>
-      </p>
-      <button class="text-sm text-blue-500 underline" (click)="clearSearch()">
-        Ver todos os produtos
+<!-- Filtros -->
+<div class="px-4 pt-4 space-y-3">
+  <!-- Chips de categoria -->
+  <div class="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
+    @for (cat of categories(); track cat) {
+      <button
+        class="whitespace-nowrap px-3 py-1 rounded-full text-sm border transition-all"
+        [class]="
+          selectedCategory() === cat
+            ? 'bg-yellow-400 border-yellow-400 font-semibold text-black'
+            : 'bg-white border-gray-300 text-gray-600 hover:border-yellow-400'
+        "
+        (click)="selectCategory(cat)"
+      >
+        {{ cat | titlecase }}
       </button>
+    }
+  </div>
+
+  <!-- Ordenação -->
+  <div class="flex items-center gap-2">
+    <span class="text-xs text-gray-500 whitespace-nowrap">Ordenar por:</span>
+    <div class="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
+      @for (
+        opt of [
+          { value: 'relevance', label: 'Relevância' },
+          { value: 'price-asc', label: 'Menor preço' },
+          { value: 'price-desc', label: 'Maior preço' },
+          { value: 'rating', label: 'Mais avaliados' },
+        ];
+        track opt.value
+      ) {
+        <button
+          class="whitespace-nowrap px-3 py-1 rounded-full text-xs border transition-all"
+          [class]="
+            selectedSort() === opt.value
+              ? 'bg-gray-800 border-gray-800 text-white font-semibold'
+              : 'bg-white border-gray-300 text-gray-600 hover:border-gray-400'
+          "
+          (click)="selectedSort.set(opt.value)"
+        >
+          {{ opt.label }}
+        </button>
+      }
     </div>
-  }
+  </div>
+
+  <!-- Contador de resultados -->
+  <p class="text-xs text-gray-400">
+    {{ filteredProducts().length }} produto{{
+      filteredProducts().length !== 1 ? 's' : ''
+    }}
+    encontrado{{ filteredProducts().length !== 1 ? 's' : '' }}
+  </p>
+</div>
+
+<!-- Sem resultados -->
+@if (filteredProducts().length === 0) {
+  <div class="flex flex-col items-center justify-center h-48 gap-2 text-gray-400 px-4">
+    <i class="fa-solid fa-magnifying-glass text-3xl"></i>
+    <p class="text-sm text-center">Nenhum produto encontrado</p>
+    <button class="text-sm text-blue-500 underline" (click)="selectCategory('todos')">
+      Ver todos os produtos
+    </button>
+  </div>
 }
 
 <app-catalog [products]="filteredProducts()" />

@@ -13,7 +13,6 @@ export class Catalog {
   productService = inject(ProductService);
   private cartService = inject(CartService);
 
-  // Aceita lista externa (do shop com filtro) ou usa todos os produtos
   products = input<Product[]>(this.productService.products());
 
   addToCart(product: Product) {

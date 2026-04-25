@@ -53,20 +53,20 @@
         class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 flex items-center gap-3"
         routerLink="/shop"
       >
-        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">🔨</div>
+        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">🏋️</div>
         <div>
-          <p class="font-semibold text-sm">Ferramentas</p>
-          <p class="text-xs text-gray-500">Construções</p>
+          <p class="font-semibold text-sm">Esportes</p>
+          <p class="text-xs text-gray-500">Suplementos</p>
         </div>
       </div>
       <div
         class="hidden sm:flex bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer p-4 items-center gap-3"
         routerLink="/shop"
       >
-        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">🏠</div>
+        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">👕</div>
         <div>
-          <p class="font-semibold text-sm">Casa</p>
-          <p class="text-xs text-gray-500">Decoração</p>
+          <p class="font-semibold text-sm">Moda</p>
+          <p class="text-xs text-gray-500">Roupas</p>
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
         <div
           class="min-w-[85%] md:min-w-[45%] lg:min-w-[30%] snap-start rounded-xl p-4 text-white cursor-pointer active:scale-[0.98] transition-all"
           [ngClass]="banner.color"
-          [routerLink]="banner.route"
+          (click)="navigateToCategory(banner.category)"
         >
           <h2 class="text-lg font-bold">{{ banner.title }}</h2>
           <p class="text-sm">{{ banner.subtitle }}</p>
@@ -150,7 +150,7 @@
     @for (cat of categories; track cat.name) {
       <div
         class="flex flex-col items-center min-w-[80px] cursor-pointer active:scale-95 transition-all"
-        [routerLink]="cat.route"
+        (click)="navigateToCategory(cat.category)"
       >
         <div class="w-16 h-16 rounded-full flex items-center justify-center" [ngClass]="cat.color">
           <img [src]="cat.image" [alt]="cat.name" class="h-10 object-contain" />
