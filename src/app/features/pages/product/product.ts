@@ -1,9 +1,10 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ProductService, Product } from '../../../core/services/product-service';
-import { CartService } from '../../../core/services/cart-service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { ProductService, Product } from '../../../core/services/product-service';
+import { CartService } from '../../../core/services/cart-service';
+import { ToastService } from '../../../core/services/toast-service';
 
 @Component({
   selector: 'app-product',
@@ -16,10 +17,10 @@ export class ProductPage {
   private router = inject(Router);
   productService = inject(ProductService);
   private cartService = inject(CartService);
+  private toastService = inject(ToastService);
 
   quantity = signal(1);
 
-  // Lê o id reativo — atualiza quando a rota muda sem recriar o componente
   private productId = toSignal(this.route.paramMap.pipe(map((params) => Number(params.get('id')))));
 
   product = computed<Product | undefined>(() => {
@@ -48,6 +49,7 @@ export class ProductPage {
     const p = this.product();
     if (!p) return;
     this.cartService.addItem(p, this.quantity());
+    this.toastService.show(`"${p.name}" adicionado ao carrinho!`);
   }
 
   buyNow() {

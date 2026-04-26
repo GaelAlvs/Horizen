@@ -1,4 +1,4 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, effect } from '@angular/core';
 import { Product } from './product-service';
 
 export interface CartItem {
@@ -10,25 +10,36 @@ export interface CartItem {
   providedIn: 'root',
 })
 export class CartService {
-  private _items = signal<CartItem[]>([]);
+  private _items = signal<CartItem[]>(this.loadFromStorage());
 
-  // Expõe o array readonly para os componentes
   readonly items = this._items.asReadonly();
 
-  // Total de itens (para o badge do header)
   readonly totalItems = computed(() => this._items().reduce((sum, item) => sum + item.quantity, 0));
 
-  // Valor total do carrinho
   readonly totalPrice = computed(() =>
     this._items().reduce((sum, item) => sum + item.product.price * item.quantity, 0),
   );
 
-  // Quantidade de um produto específico no carrinho
+  constructor() {
+    // Salva no localStorage sempre que o carrinho mudar
+    effect(() => {
+      localStorage.setItem('horizen_cart', JSON.stringify(this._items()));
+    });
+  }
+
+  private loadFromStorage(): CartItem[] {
+    try {
+      const data = localStorage.getItem('horizen_cart');
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  }
+
   getQuantity(productId: number): number {
     return this._items().find((i) => i.product.id === productId)?.quantity ?? 0;
   }
 
-  // Verifica se um produto já está no carrinho
   isInCart(productId: number): boolean {
     return this._items().some((i) => i.product.id === productId);
   }
@@ -36,17 +47,13 @@ export class CartService {
   addItem(product: Product, quantity = 1) {
     this._items.update((items) => {
       const existing = items.find((i) => i.product.id === product.id);
-
       if (existing) {
-        // Se já existe, soma a quantidade respeitando o estoque
         return items.map((i) =>
           i.product.id === product.id
             ? { ...i, quantity: Math.min(i.quantity + quantity, product.stock) }
             : i,
         );
       }
-
-      // Se não existe, adiciona novo item
       return [...items, { product, quantity }];
     });
   }
@@ -60,7 +67,6 @@ export class CartService {
       this.removeItem(productId);
       return;
     }
-
     this._items.update((items) =>
       items.map((i) =>
         i.product.id === productId ? { ...i, quantity: Math.min(quantity, i.product.stock) } : i,

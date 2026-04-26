@@ -2,6 +2,7 @@ import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductService, Product } from '../../../core/services/product-service';
 import { CartService } from '../../../core/services/cart-service';
+import { ToastService } from '../../../core/services/toast-service';
 
 @Component({
   selector: 'app-catalog',
@@ -12,11 +13,13 @@ import { CartService } from '../../../core/services/cart-service';
 export class Catalog {
   productService = inject(ProductService);
   private cartService = inject(CartService);
+  private toastService = inject(ToastService);
 
   products = input<Product[]>(this.productService.products());
 
   addToCart(product: Product) {
     this.cartService.addItem(product);
+    this.toastService.show(`"${product.name}" adicionado ao carrinho!`);
   }
 
   getStars(rating: number): string[] {

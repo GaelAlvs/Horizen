@@ -1,0 +1,27 @@
+<div
+  class="fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 items-center pointer-events-none"
+>
+  @for (toast of toastService.toasts(); track toast.id) {
+    <div
+      class="flex items-center gap-2 px-4 py-3 rounded-xl shadow-lg text-sm font-medium text-white animate-fade-in pointer-events-auto"
+      [class]="
+        toast.type === 'success'
+          ? 'bg-green-500'
+          : toast.type === 'error'
+            ? 'bg-red-500'
+            : 'bg-blue-500'
+      "
+    >
+      <i
+        [class]="
+          toast.type === 'success'
+            ? 'fa-solid fa-check'
+            : toast.type === 'error'
+              ? 'fa-solid fa-xmark'
+              : 'fa-solid fa-info'
+        "
+      ></i>
+      {{ toast.message }}
+    </div>
+  }
+</div>
